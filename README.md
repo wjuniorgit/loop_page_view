@@ -1,10 +1,10 @@
 # loop_page_view
 
-A simple PageView builder constructor wrapper that allows for "indefinitely" scrolling on both directions. 
+A simple PageView builder constructor wrapper that allows for “indefinitely” scrolling on both directions. 
 
 ## Usage
 
-Import the package into your code
+Import the package into your code:
 
 ```dart
 import 'package:loop_page_view/loop_page_view.dart';
@@ -15,7 +15,7 @@ It works exactly as a PageView builder constructor would, but it always requires
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.0.0
+  loop_page_view: ^1.0.2
 ```
 
 ## Example

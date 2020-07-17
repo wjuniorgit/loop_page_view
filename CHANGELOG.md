@@ -1,3 +1,7 @@
+## [1.0.2] - July 17, 2020.
+
+* Corrected information in readme file.
+
 ## [1.0.1] - July 17, 2020.
 
 * Corrected initialPage value.
