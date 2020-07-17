@@ -1,3 +1,7 @@
+## [1.0.3] - July 17, 2020.
+
+* Added documentation comments.
+
 ## [1.0.2] - July 17, 2020.
 
 * Corrected information in readme file.
