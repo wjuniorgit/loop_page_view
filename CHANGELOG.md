@@ -1,3 +1,7 @@
+## [1.0.4] - July 17, 2020.
+
+* Removed unrelated files from the project.
+
 ## [1.0.3] - July 17, 2020.
 
 * Added documentation comments.
