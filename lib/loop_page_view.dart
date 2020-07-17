@@ -16,7 +16,7 @@ class LoopPageView extends StatelessWidget {
     this.allowImplicitScrolling = false,
   })  : assert(allowImplicitScrolling != null),
         controller = controller ?? PageController(),
-        initialPage = controller != null ? controller.initialPage + 1 : 1,
+        initialPage = controller != null ? controller.initialPage : 0,
         childrenDelegate =
             SliverChildBuilderDelegate(itemBuilder, childCount: itemCount),
         super(key: key);
