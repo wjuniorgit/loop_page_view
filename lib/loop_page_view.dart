@@ -1,17 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
+part 'loop_page_controller.dart';
+
 /// A PageView.builder() wrapper that creates an indefinitely scrollable list.
-class LoopPageView extends StatelessWidget {
+/// [LoopPageController] must be the controller.
+class LoopPageView extends StatefulWidget {
   /// [itemCount] is required to calculate the real index.
   ///
   /// [itemBuilder] will be called only with indices greater than or equal to
   /// zero and less than [itemCount].
   LoopPageView.builder({
-    Key key,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
-    PageController controller,
+    LoopPageController controller,
     this.physics,
     this.pageSnapping = true,
     this.onPageChanged,
@@ -20,8 +22,9 @@ class LoopPageView extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
   })  : assert(allowImplicitScrolling != null),
-        controller = controller ?? PageController(),
-        _initialPage = controller != null ? controller.initialPage : 0;
+        controller = controller ?? LoopPageController();
+
+  //_initialPage = controller != null ? controller.initialPage : 0,
 
   /// Controls whether the widget's pages will respond to
   /// [RenderObject.showOnScreen], which will allow for implicit accessibility
@@ -38,7 +41,7 @@ class LoopPageView extends StatelessWidget {
 
   /// An object that can be used to control the position to which this page
   /// view is scrolled.
-  final PageController controller;
+  final LoopPageController controller;
 
   /// Configuration of offset passed to [DragStartDetails].
   ///
@@ -88,29 +91,41 @@ class LoopPageView extends StatelessWidget {
   /// Defaults to [Axis.horizontal].
   final Axis scrollDirection;
 
+  @override
+  _LoopPageViewState createState() => _LoopPageViewState();
+}
+
+class _LoopPageViewState extends State<LoopPageView> {
   /// The page to show when first creating the [LoopPageView].
-  final int _initialPage;
+  //final int _initialPage;
+
+  @override
+  @override
+  void initState() {
+    widget.controller._itemCount = widget.itemCount;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      controller: PageController(
-          viewportFraction: controller.viewportFraction,
-          initialPage: 100000 + _initialPage,
-          keepPage: controller.keepPage),
+      controller: widget.controller,
       onPageChanged: (int index) {
-        if (onPageChanged != null) onPageChanged((index - 1) % itemCount);
+        widget.controller._currentShiftedPage = index;
+        if (widget.onPageChanged != null) {
+          widget.onPageChanged(index % widget.itemCount);
+        }
       },
       itemBuilder: (context, index) {
-        return itemBuilder(context, (index - 1) % itemCount);
+        return widget.itemBuilder(context, index % widget.itemCount);
       },
-      key: key,
-      scrollDirection: scrollDirection,
-      reverse: reverse,
-      physics: physics,
-      pageSnapping: pageSnapping,
-      dragStartBehavior: dragStartBehavior,
-      allowImplicitScrolling: allowImplicitScrolling,
+      key: widget.key,
+      scrollDirection: widget.scrollDirection,
+      reverse: widget.reverse,
+      physics: widget.physics,
+      pageSnapping: widget.pageSnapping,
+      dragStartBehavior: widget.dragStartBehavior,
+      allowImplicitScrolling: widget.allowImplicitScrolling,
     );
   }
 }

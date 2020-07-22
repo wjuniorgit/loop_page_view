@@ -1,3 +1,7 @@
+## [1.0.5] - July 21, 2020.
+
+* LoopPageController created.
+
 ## [1.0.4] - July 17, 2020.
 
 * Removed unrelated files from the project.
