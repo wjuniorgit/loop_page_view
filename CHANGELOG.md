@@ -1,3 +1,7 @@
+## [1.0.6] - July 22, 2020.
+
+* Fixed LoopPageView index forwarding value.
+
 ## [1.0.5] - July 21, 2020.
 
 * LoopPageController created.

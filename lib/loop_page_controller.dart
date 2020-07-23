@@ -10,6 +10,11 @@ class LoopPageController extends PageController {
   // ignore: prefer_final_fields
   int _itemCount;
 
+  // ignore: prefer_final_fields
+  int _initialIndexShift;
+
+  final int _initialPage;
+
   LoopPageController({
     int initialPage = 0,
     bool keepPage = true,
@@ -20,11 +25,33 @@ class LoopPageController extends PageController {
         assert(viewportFraction > 0.0),
         _currentShiftedPage = _initialShiftedPage,
         _itemCount = 0,
+        _initialIndexShift = 0,
+        _initialPage = initialPage,
         super(
           initialPage: initialPage + _initialShiftedPage,
           keepPage: keepPage,
           viewportFraction: viewportFraction,
         );
+
+  /// The current page displayed in the controlled [LoopPageView].
+  ///
+  /// There are circumstances that this [LoopPageController] can't know the current
+  /// page. Reading [page] will throw an [AssertionError] in the following cases:
+  ///
+  /// 1. No [LoopPageView] is currently using this [LoopPageController]. Once a
+  /// [LoopPageView] starts using this [LoopPageController], the new [page]
+  /// position will be derived:
+  ///
+  ///   * First, based on the attached [LoopPageView]'s [BuildContext] and the
+  ///     position saved at that context's [PageStorage] if [keepPage] is true.
+  ///   * Second, from the [LoopPageController]'s [initialPage].
+  ///
+  /// 2. More than one [LoopPageView] using the same [LoopPageController].
+  ///
+  /// The [hasClients] property can be used to check if a [LoopPageView] is attached
+  /// prior to accessing [page].
+  @override
+  double get page => _shiftPage(super.page.round()).toDouble();
 
   /// Animates the controlled [LoopPageView] from the current page to the given page.
   ///
@@ -76,26 +103,24 @@ class LoopPageController extends PageController {
         duration: duration, curve: curve);
   }
 
-  int _currentNotShiftedPage(int instantCurrentShiftedPage) {
-    final int initialIndexShift = _initialShiftedPage % _itemCount;
+  int _notShiftedIndex(int index) {
+    final int currentIndexShift = index % _itemCount;
 
-    final int currentIndexShift = instantCurrentShiftedPage % _itemCount;
-
-    final int difference = currentIndexShift - initialIndexShift;
+    final int difference = currentIndexShift - _initialIndexShift;
 
     if (difference < 0) return difference + _itemCount;
-
     return difference;
   }
 
   int _shiftPage(int page) {
-    final modPage = page % _itemCount;
+    final modPage = (page % _itemCount);
 
     final int instantCurrentShiftedPage = _currentShiftedPage;
-    final int currentNotShiftedPage =
-        _currentNotShiftedPage(instantCurrentShiftedPage);
 
-    if (currentNotShiftedPage == modPage) return _currentShiftedPage;
+    final int currentNotShiftedPage =
+        _notShiftedIndex(instantCurrentShiftedPage);
+
+    if (currentNotShiftedPage == modPage) return instantCurrentShiftedPage;
 
     final int distance = modPage - currentNotShiftedPage;
 
@@ -106,7 +131,13 @@ class LoopPageController extends PageController {
     final int shiftedPage = distance.abs() <= oppositeDistance.abs()
         ? instantCurrentShiftedPage + distance
         : instantCurrentShiftedPage + oppositeDistance;
-
     return shiftedPage;
+  }
+
+  //Should be called only once.
+  void _updateItemCount(int itemCount) {
+    _itemCount = itemCount;
+    _initialIndexShift = _initialShiftedPage % _itemCount;
+    _currentShiftedPage = _initialShiftedPage + _initialPage;
   }
 }

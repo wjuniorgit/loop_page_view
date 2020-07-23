@@ -6,26 +6,6 @@ part 'loop_page_controller.dart';
 /// A PageView.builder() wrapper that creates an indefinitely scrollable list.
 /// [LoopPageController] must be the controller.
 class LoopPageView extends StatefulWidget {
-  /// [itemCount] is required to calculate the real index.
-  ///
-  /// [itemBuilder] will be called only with indices greater than or equal to
-  /// zero and less than [itemCount].
-  LoopPageView.builder({
-    this.scrollDirection = Axis.horizontal,
-    this.reverse = false,
-    LoopPageController controller,
-    this.physics,
-    this.pageSnapping = true,
-    this.onPageChanged,
-    @required this.itemBuilder,
-    @required this.itemCount,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.allowImplicitScrolling = false,
-  })  : assert(allowImplicitScrolling != null),
-        controller = controller ?? LoopPageController();
-
-  //_initialPage = controller != null ? controller.initialPage : 0,
-
   /// Controls whether the widget's pages will respond to
   /// [RenderObject.showOnScreen], which will allow for implicit accessibility
   /// scrolling.
@@ -91,21 +71,29 @@ class LoopPageView extends StatefulWidget {
   /// Defaults to [Axis.horizontal].
   final Axis scrollDirection;
 
+  /// [itemCount] is required by the controller to calculate the real index.
+  ///
+  /// [itemBuilder] will be called only with indices greater than or equal to
+  /// zero and less than [itemCount].
+  LoopPageView.builder({
+    this.scrollDirection = Axis.horizontal,
+    this.reverse = false,
+    LoopPageController controller,
+    this.physics,
+    this.pageSnapping = true,
+    this.onPageChanged,
+    @required this.itemBuilder,
+    @required this.itemCount,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.allowImplicitScrolling = false,
+  })  : assert(allowImplicitScrolling != null),
+        controller = controller ?? LoopPageController();
+
   @override
   _LoopPageViewState createState() => _LoopPageViewState();
 }
 
 class _LoopPageViewState extends State<LoopPageView> {
-  /// The page to show when first creating the [LoopPageView].
-  //final int _initialPage;
-
-  @override
-  @override
-  void initState() {
-    widget.controller._itemCount = widget.itemCount;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -113,11 +101,12 @@ class _LoopPageViewState extends State<LoopPageView> {
       onPageChanged: (int index) {
         widget.controller._currentShiftedPage = index;
         if (widget.onPageChanged != null) {
-          widget.onPageChanged(index % widget.itemCount);
+          widget.onPageChanged(widget.controller._notShiftedIndex(index));
         }
       },
       itemBuilder: (context, index) {
-        return widget.itemBuilder(context, index % widget.itemCount);
+        return widget.itemBuilder(
+            context, widget.controller._notShiftedIndex(index));
       },
       key: widget.key,
       scrollDirection: widget.scrollDirection,
@@ -127,5 +116,11 @@ class _LoopPageViewState extends State<LoopPageView> {
       dragStartBehavior: widget.dragStartBehavior,
       allowImplicitScrolling: widget.allowImplicitScrolling,
     );
+  }
+
+  @override
+  void initState() {
+    widget.controller._updateItemCount(widget.itemCount);
+    super.initState();
   }
 }
