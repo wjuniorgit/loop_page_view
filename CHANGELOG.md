@@ -1,3 +1,8 @@
+## [1.0.7] - July 27, 2020.
+
+* LoopPageViewController is now a PageController composition.
+* LoopPageViewController.page value fixed.
+
 ## [1.0.6] - July 22, 2020.
 
 * Fixed LoopPageView index forwarding value.

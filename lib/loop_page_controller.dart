@@ -1,7 +1,7 @@
 part of 'loop_page_view.dart';
 
 /// A [PageController] extension to handle [LoopPageView] indefinitely scrollable list.
-class LoopPageController extends PageController {
+class LoopPageController {
   static const int _initialShiftedPage = 100000;
 
   // ignore: prefer_final_fields
@@ -12,6 +12,8 @@ class LoopPageController extends PageController {
 
   // ignore: prefer_final_fields
   int _initialIndexShift;
+
+  final PageController _pageController;
 
   final int _initialPage;
 
@@ -27,7 +29,7 @@ class LoopPageController extends PageController {
         _itemCount = 0,
         _initialIndexShift = 0,
         _initialPage = initialPage,
-        super(
+        _pageController = PageController(
           initialPage: initialPage + _initialShiftedPage,
           keepPage: keepPage,
           viewportFraction: viewportFraction,
@@ -51,10 +53,9 @@ class LoopPageController extends PageController {
   /// The [hasClients] property can be used to check if a [LoopPageView] is attached
   /// prior to accessing [page].
   ///
-  @override
   double get page =>
-      _notShiftedIndex(super.page.floor()).toDouble() +
-      (super.page - super.page.truncate());
+      _notShiftedIndex(_pageController.page.floor()).toDouble() +
+      (_pageController.page - _pageController.page.truncate());
 
   // @override
   // double get page => super.page;
@@ -65,23 +66,21 @@ class LoopPageController extends PageController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  @override
   Future<void> animateToPage(
     int page, {
     @required Duration duration,
     @required Curve curve,
   }) {
-    return super
-        .animateToPage(_shiftPage(page), duration: duration, curve: curve);
+    return _pageController.animateToPage(_shiftPage(page),
+        duration: duration, curve: curve);
   }
 
   /// Changes which page is displayed in the controlled [LoopPageView].
   ///
   /// Jumps the page position from its current value to the given value,
   /// without animation.
-  @override
   void jumpToPage(int page) {
-    super.jumpToPage(_shiftPage(page));
+    _pageController.jumpToPage(_shiftPage(page));
   }
 
   /// Animates the controlled [LoopPageView] to the next page.
@@ -90,7 +89,6 @@ class LoopPageController extends PageController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  @override
   Future<void> nextPage({@required Duration duration, @required Curve curve}) {
     return animateToPage(_shiftPage(page.round()) + 1,
         duration: duration, curve: curve);
@@ -102,7 +100,6 @@ class LoopPageController extends PageController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  @override
   Future<void> previousPage(
       {@required Duration duration, @required Curve curve}) {
     return animateToPage(_shiftPage(page.round()) - 1,
@@ -145,5 +142,9 @@ class LoopPageController extends PageController {
     _itemCount = itemCount;
     _initialIndexShift = _initialShiftedPage % _itemCount;
     _currentShiftedPage = _initialShiftedPage + _initialPage;
+  }
+
+  void dispose() {
+    _pageController.dispose();
   }
 }

@@ -97,7 +97,7 @@ class _LoopPageViewState extends State<LoopPageView> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      controller: widget.controller,
+      controller: widget.controller._pageController,
       onPageChanged: (int index) {
         widget.controller._currentShiftedPage = index;
         if (widget.onPageChanged != null) {
