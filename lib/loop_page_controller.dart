@@ -50,8 +50,14 @@ class LoopPageController extends PageController {
   ///
   /// The [hasClients] property can be used to check if a [LoopPageView] is attached
   /// prior to accessing [page].
+  ///
   @override
-  double get page => _shiftPage(super.page.round()).toDouble();
+  double get page =>
+      _notShiftedIndex(super.page.floor()).toDouble() +
+      (super.page - super.page.truncate());
+
+  // @override
+  // double get page => super.page;
 
   /// Animates the controlled [LoopPageView] from the current page to the given page.
   ///
