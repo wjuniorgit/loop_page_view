@@ -96,26 +96,28 @@ class LoopPageView extends StatefulWidget {
 class _LoopPageViewState extends State<LoopPageView> {
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: widget.controller._pageController,
-      onPageChanged: (int index) {
-        widget.controller._currentShiftedPage = index;
-        if (widget.onPageChanged != null) {
-          widget.onPageChanged(widget.controller._notShiftedIndex(index));
-        }
-      },
-      itemBuilder: (context, index) {
-        return widget.itemBuilder(
-            context, widget.controller._notShiftedIndex(index));
-      },
-      key: widget.key,
-      scrollDirection: widget.scrollDirection,
-      reverse: widget.reverse,
-      physics: widget.physics,
-      pageSnapping: widget.pageSnapping,
-      dragStartBehavior: widget.dragStartBehavior,
-      allowImplicitScrolling: widget.allowImplicitScrolling,
-    );
+    return widget.itemCount > 0
+        ? PageView.builder(
+            controller: widget.controller._pageController,
+            onPageChanged: (int index) {
+              widget.controller._currentShiftedPage = index;
+              if (widget.onPageChanged != null) {
+                widget.onPageChanged(widget.controller._notShiftedIndex(index));
+              }
+            },
+            itemBuilder: (context, index) {
+              return widget.itemBuilder(
+                  context, widget.controller._notShiftedIndex(index));
+            },
+            key: widget.key,
+            scrollDirection: widget.scrollDirection,
+            reverse: widget.reverse,
+            physics: widget.physics,
+            pageSnapping: widget.pageSnapping,
+            dragStartBehavior: widget.dragStartBehavior,
+            allowImplicitScrolling: widget.allowImplicitScrolling,
+          )
+        : Container();
   }
 
   @override

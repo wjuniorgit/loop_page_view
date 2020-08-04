@@ -1,3 +1,7 @@
+## [1.0.9] - August 04, 2020.
+
+* Empty Container if itemCount is 0.
+
 ## [1.0.8] - August 04, 2020.
 
 * LoopPageViewController if itemCount is 0 error fixed.
