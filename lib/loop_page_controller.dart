@@ -107,7 +107,7 @@ class LoopPageController {
   }
 
   int _notShiftedIndex(int index) {
-    final int currentIndexShift = index % _itemCount;
+    final int currentIndexShift = _itemCount > 0 ? index % _itemCount : index;
 
     final int difference = currentIndexShift - _initialIndexShift;
 
@@ -116,7 +116,7 @@ class LoopPageController {
   }
 
   int _shiftPage(int page) {
-    final modPage = (page % _itemCount);
+    final modPage = _itemCount > 0 ? (page % _itemCount) : page;
 
     final int instantCurrentShiftedPage = _currentShiftedPage;
 
@@ -140,7 +140,8 @@ class LoopPageController {
   //Should be called only once.
   void _updateItemCount(int itemCount) {
     _itemCount = itemCount;
-    _initialIndexShift = _initialShiftedPage % _itemCount;
+    _initialIndexShift =
+        _itemCount > 0 ? _initialShiftedPage % _itemCount : _initialShiftedPage;
     _currentShiftedPage = _initialShiftedPage + _initialPage;
   }
 

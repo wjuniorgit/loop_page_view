@@ -1,3 +1,7 @@
+## [1.0.8] - August 04, 2020.
+
+* LoopPageViewController if itemCount is 0 error fixed.
+
 ## [1.0.7] - July 27, 2020.
 
 * LoopPageViewController is now a PageController composition.
