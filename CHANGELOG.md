@@ -1,3 +1,7 @@
+## [1.0.10] - September 14, 2020.
+
+* Correctly update item count on widget update.
+
 ## [1.0.9] - August 04, 2020.
 
 * Empty Container if itemCount is 0.

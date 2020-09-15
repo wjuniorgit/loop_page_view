@@ -16,7 +16,7 @@ It works exactly as a PageView builder constructor would, but it always requires
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.0.9
+  loop_page_view: ^1.0.10
 ```
 
 ## Example

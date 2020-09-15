@@ -125,4 +125,10 @@ class _LoopPageViewState extends State<LoopPageView> {
     widget.controller._updateItemCount(widget.itemCount);
     super.initState();
   }
+
+  @override
+  void didUpdateWidget(LoopPageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.controller._updateItemCount(widget.itemCount);
+  }
 }

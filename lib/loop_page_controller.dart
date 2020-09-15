@@ -137,7 +137,6 @@ class LoopPageController {
     return shiftedPage;
   }
 
-  //Should be called only once.
   void _updateItemCount(int itemCount) {
     _itemCount = itemCount;
     _initialIndexShift =
