@@ -94,41 +94,67 @@ class LoopPageView extends StatefulWidget {
 }
 
 class _LoopPageViewState extends State<LoopPageView> {
+  Widget currentPage;
+
   @override
   Widget build(BuildContext context) {
     return widget.itemCount > 0
-        ? PageView.builder(
-            controller: widget.controller._pageController,
-            onPageChanged: (int index) {
-              widget.controller._currentShiftedPage = index;
-              if (widget.onPageChanged != null) {
-                widget.onPageChanged(widget.controller._notShiftedIndex(index));
+        ? NotificationListener<ScrollNotification>(
+            onNotification: (scrollNotification) {
+              if (scrollNotification is ScrollEndNotification) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  widget.controller._modJump();
+                });
+                widget.controller._updateCurrentShiftedPage();
               }
+              return false;
             },
-            itemBuilder: (context, index) {
-              return widget.itemBuilder(
-                  context, widget.controller._notShiftedIndex(index));
-            },
-            key: widget.key,
-            scrollDirection: widget.scrollDirection,
-            reverse: widget.reverse,
-            physics: widget.physics,
-            pageSnapping: widget.pageSnapping,
-            dragStartBehavior: widget.dragStartBehavior,
-            allowImplicitScrolling: widget.allowImplicitScrolling,
+            child: PageView.builder(
+              controller: widget.controller._pageController,
+              onPageChanged: (int index) {
+                if (widget.controller._isAnimatingJumpToPage != true &&
+                    widget.onPageChanged != null)
+                  widget
+                      .onPageChanged(widget.controller._notShiftedIndex(index));
+              },
+              itemBuilder: (context, index) {
+                final int notShiftedIndex =
+                    widget.controller._notShiftedIndex(index);
+
+                if (widget.controller._isAnimatingJumpToPage == true &&
+                    currentPage != null &&
+                    notShiftedIndex ==
+                        widget.controller._isAnimatingJumpToPageIndex) {
+                  widget.controller._isAnimatingJumpToPage = false;
+                  return currentPage;
+                }
+
+                currentPage = widget.itemBuilder(context, notShiftedIndex);
+
+                return currentPage;
+              },
+              key: widget.key,
+              scrollDirection: widget.scrollDirection,
+              reverse: widget.reverse,
+              physics: widget.physics,
+              pageSnapping: widget.pageSnapping,
+              dragStartBehavior: widget.dragStartBehavior,
+              allowImplicitScrolling: widget.allowImplicitScrolling,
+            ),
           )
         : Container();
+  }
+
+  @override
+  void didUpdateWidget(LoopPageView oldWidget) {
+    if (oldWidget.itemCount != widget.itemCount)
+      widget.controller._updateItemCount(widget.itemCount);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
     widget.controller._updateItemCount(widget.itemCount);
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(LoopPageView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    widget.controller._updateItemCount(widget.itemCount);
   }
 }

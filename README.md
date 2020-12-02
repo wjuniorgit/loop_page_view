@@ -10,13 +10,15 @@ Import the package into your code:
 import 'package:loop_page_view/loop_page_view.dart';
 ```
 
-It works exactly as a PageView builder constructor would, but it always requires an item count, and it requires LoopPageController as its controller. LoopPageController also works just as a PageController would, but it correctly handles LoopPageView indefinitely scrollable list.
+It works exactly as a PageView builder constructor would, but it always requires an item count, and it requires a LoopPageController as its controller. LoopPageController also works just as a PageController would, but it correctly handles LoopPageView endless scrollable list.
+
+An animateJumpToPage method was added to LoopPageController in order to animate a jump to any page without building the pages in between if viewportFraction is 1.0.
 
 ## Installation
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.0.10
+  loop_page_view: ^1.0.11
 ```
 
 ## Example
@@ -57,6 +59,8 @@ class MyApp extends StatelessWidget {
 ## Demo
 
 ![](https://media1.giphy.com/media/f8hh4SYeyc7fDcMN77/giphy.gif)
+
+![](https://media4.giphy.com/media/zv3rjIbf49jI9LzgvX/giphy.gif)
 
 ## Author
 

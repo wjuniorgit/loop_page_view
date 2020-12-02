@@ -1,3 +1,10 @@
+## [1.0.11] - December 02, 2020.
+
+* Added animateJumpToPage on LoopPageViewController. It animates to a page without building the pages in between.
+* Improved nearest page in animateToPage.
+* Loop is really infinite now.
+* Added the ScrollController interface to LoopPageViewController.
+
 ## [1.0.10] - September 14, 2020.
 
 * Correctly update item count on widget update.
