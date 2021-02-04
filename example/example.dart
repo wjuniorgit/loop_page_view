@@ -42,7 +42,8 @@ class _MyAppState extends State<MyApp> {
             children: [
               SizedBox(
                 height: 80,
-                child: LoopPageView.builder(
+                child: 
+                LoopPageView.builder(
                   controller: controller,
                   itemCount: colors.length,
                   itemBuilder: (_, index) {
