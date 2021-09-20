@@ -13,9 +13,9 @@ class LoopPageController {
   // ignore: prefer_final_fields
   int _initialIndexShift;
 
-  final PageController _pageController;
+  late PageController _pageController;
 
-  final int _initialPage;
+  late int _initialPage;
 
   bool _isAnimatingJumpToPage = false;
 
@@ -25,11 +25,7 @@ class LoopPageController {
     int initialPage = 0,
     bool keepPage = true,
     double viewportFraction = 1.0,
-  })  : assert(initialPage != null),
-        assert(keepPage != null),
-        assert(viewportFraction != null),
-        assert(viewportFraction > 0.0),
-        _currentShiftedPage = _initialShiftedPage,
+  })  : _currentShiftedPage = _initialShiftedPage,
         _itemCount = 0,
         _initialIndexShift = 0,
         _initialPage = initialPage,
@@ -96,8 +92,8 @@ class LoopPageController {
   /// prior to accessing [page].
   ///
   double get page =>
-      _notShiftedIndex(_pageController.page.floor()).toDouble() +
-      (_pageController.page - _pageController.page.truncate());
+      _notShiftedIndex(_pageController.page!.floor()).toDouble() +
+      (_pageController.page! - _pageController.page!.truncate());
 
   /// Jumps to imediate before or after given page and then
   /// animates the controlled [LoopPageView] from the imediate page to the given page.
@@ -110,8 +106,8 @@ class LoopPageController {
   /// The `duration` and `curve` arguments must not be null.
   Future<void> animateJumpToPage(
     int page, {
-    @required Duration duration,
-    @required Curve curve,
+    required Duration duration,
+    required Curve curve,
   }) {
     final shiftedPage = _shiftPage(page);
 
@@ -139,8 +135,8 @@ class LoopPageController {
   /// The `duration` and `curve` arguments must not be null.
   Future<void> animateToPage(
     int page, {
-    @required Duration duration,
-    @required Curve curve,
+    required Duration duration,
+    required Curve curve,
   }) {
     final int shiftedPage = _shiftPage(page);
     if (_currentShiftedPage != shiftedPage) {
@@ -174,7 +170,7 @@ class LoopPageController {
   /// The returned [Future] resolves when the animation completes.
   ///
   /// The `duration` and `curve` arguments must not be null.
-  Future<void> nextPage({@required Duration duration, @required Curve curve}) {
+  Future<void> nextPage({required Duration duration, required Curve curve}) {
     return animateToPage(_shiftPage(page.round()) + 1,
         duration: duration, curve: curve);
   }
@@ -186,7 +182,7 @@ class LoopPageController {
   ///
   /// The `duration` and `curve` arguments must not be null.
   Future<void> previousPage(
-      {@required Duration duration, @required Curve curve}) {
+      {required Duration duration, required Curve curve}) {
     return animateToPage(_shiftPage(page.round()) - 1,
         duration: duration, curve: curve);
   }
@@ -240,7 +236,7 @@ class LoopPageController {
 
   /// Updates _currentShiftedPage to be equal current [PageController] page.
   void _updateCurrentShiftedPage() {
-    _currentShiftedPage = _pageController.page.roundToDouble().toInt();
+    _currentShiftedPage = _pageController.page!.roundToDouble().toInt();
   }
 
   void _updateItemCount(int itemCount) {

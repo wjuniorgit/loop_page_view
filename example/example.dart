@@ -4,6 +4,7 @@ import 'package:loop_page_view/loop_page_view.dart';
 void main() {
   runApp(MyApp());
 }
+
 final Set<MaterialColor> colors = {
   Colors.blueGrey,
   Colors.blue,
@@ -42,8 +43,7 @@ class _MyAppState extends State<MyApp> {
             children: [
               SizedBox(
                 height: 80,
-                child: 
-                LoopPageView.builder(
+                child: LoopPageView.builder(
                   controller: controller,
                   itemCount: colors.length,
                   itemBuilder: (_, index) {
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
                   isSelected: isSelected,
                 ),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Animate to $selectedIndex'),
                 onPressed: () {
                   controller.animateToPage(selectedIndex,
@@ -84,13 +84,13 @@ class _MyAppState extends State<MyApp> {
                       curve: Curves.easeIn);
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Jump to $selectedIndex'),
                 onPressed: () {
                   controller.jumpToPage(selectedIndex);
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Animate jump to $selectedIndex'),
                 onPressed: () {
                   controller.animateJumpToPage(selectedIndex,
