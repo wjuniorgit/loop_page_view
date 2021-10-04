@@ -1,3 +1,7 @@
+## [1.1.0] - October 4, 2021.
+
+* Updates min sdk to >=2.12.0.
+
 ## [1.0.11] - December 02, 2020.
 
 * Added animateJumpToPage on LoopPageViewController. It animates to a page without building the pages in between.
