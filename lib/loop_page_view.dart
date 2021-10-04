@@ -83,7 +83,12 @@ class LoopPageView extends StatefulWidget {
     this.onPageChanged,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
+    LoopPageController? controller,
+    this.physics,
     this.pageSnapping = true,
+    this.onPageChanged,
+    required this.itemBuilder,
+    required this.itemCount,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
   }) : controller = controller ?? LoopPageController();
@@ -112,10 +117,9 @@ class _LoopPageViewState extends State<LoopPageView> {
               controller: widget.controller._pageController,
               onPageChanged: (int index) {
                 if (widget.controller._isAnimatingJumpToPage != true &&
-                    widget.onPageChanged != null) {
+                    widget.onPageChanged != null)
                   widget.onPageChanged!(
                       widget.controller._notShiftedIndex(index));
-                }
               },
               itemBuilder: (context, index) {
                 final int notShiftedIndex =
@@ -126,7 +130,7 @@ class _LoopPageViewState extends State<LoopPageView> {
                     notShiftedIndex ==
                         widget.controller._isAnimatingJumpToPageIndex) {
                   widget.controller._isAnimatingJumpToPage = false;
-                  return currentPage!;
+                  return currentPage ?? Container();
                 }
 
                 currentPage = widget.itemBuilder(context, notShiftedIndex);
