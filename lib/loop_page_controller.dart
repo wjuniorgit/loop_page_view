@@ -13,9 +13,9 @@ class LoopPageController {
   // ignore: prefer_final_fields
   int _initialIndexShift;
 
-  final PageController _pageController;
+  late PageController _pageController;
 
-  final int _initialPage;
+  late int _initialPage;
 
   bool _isAnimatingJumpToPage = false;
 
@@ -93,8 +93,8 @@ class LoopPageController {
   /// prior to accessing [page].
   ///
   double get page =>
-      _notShiftedIndex(_pageController.page?.floor() ?? 0).toDouble() +
-      (_pageController.page ?? 0 - (_pageController.page?.truncate() ?? 0));
+      _notShiftedIndex(_pageController.page!.floor()).toDouble() +
+      (_pageController.page! - _pageController.page!.truncate());
 
   /// Jumps to imediate before or after given page and then
   /// animates the controlled [LoopPageView] from the imediate page to the given page.
@@ -237,7 +237,7 @@ class LoopPageController {
 
   /// Updates _currentShiftedPage to be equal current [PageController] page.
   void _updateCurrentShiftedPage() {
-    _currentShiftedPage = _pageController.page?.roundToDouble().toInt() ?? 0;
+    _currentShiftedPage = _pageController.page!.roundToDouble().toInt();
   }
 
   void _updateItemCount(int itemCount) {

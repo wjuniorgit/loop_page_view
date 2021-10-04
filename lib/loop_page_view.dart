@@ -76,6 +76,11 @@ class LoopPageView extends StatefulWidget {
   /// [itemBuilder] will be called only with indices greater than or equal to
   /// zero and less than [itemCount].
   LoopPageView.builder({
+    required this.itemBuilder,
+    required this.itemCount,
+    LoopPageController? controller,
+    this.physics,
+    this.onPageChanged,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
     LoopPageController? controller,
