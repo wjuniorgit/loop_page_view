@@ -36,7 +36,7 @@ class LoopPageView extends StatefulWidget {
   final int itemCount;
 
   /// Callbacks that report that page value has changed
-  final ValueChanged<int> onPageChanged;
+  final ValueChanged<int>? onPageChanged;
 
   /// Set to false to disable page snapping, useful for custom scroll behavior.
   final bool pageSnapping;
@@ -50,7 +50,7 @@ class LoopPageView extends StatefulWidget {
   /// [PageScrollPhysics] prior to being used.
   ///
   /// Defaults to matching platform conventions.
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
 
   /// Whether the page view scrolls in the reading direction.
   ///
@@ -78,12 +78,12 @@ class LoopPageView extends StatefulWidget {
   LoopPageView.builder({
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
-    LoopPageController controller,
+    LoopPageController? controller,
     this.physics,
     this.pageSnapping = true,
     this.onPageChanged,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    required this.itemBuilder,
+    required this.itemCount,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
   })  : assert(allowImplicitScrolling != null),
@@ -94,7 +94,7 @@ class LoopPageView extends StatefulWidget {
 }
 
 class _LoopPageViewState extends State<LoopPageView> {
-  Widget currentPage;
+  Widget? currentPage;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class _LoopPageViewState extends State<LoopPageView> {
         ? NotificationListener<ScrollNotification>(
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollEndNotification) {
-                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                WidgetsBinding.instance?.addPostFrameCallback((_) async {
                   widget.controller._modJump();
                 });
                 widget.controller._updateCurrentShiftedPage();
@@ -114,8 +114,8 @@ class _LoopPageViewState extends State<LoopPageView> {
               onPageChanged: (int index) {
                 if (widget.controller._isAnimatingJumpToPage != true &&
                     widget.onPageChanged != null)
-                  widget
-                      .onPageChanged(widget.controller._notShiftedIndex(index));
+                  widget.onPageChanged!(
+                      widget.controller._notShiftedIndex(index));
               },
               itemBuilder: (context, index) {
                 final int notShiftedIndex =
@@ -126,17 +126,17 @@ class _LoopPageViewState extends State<LoopPageView> {
                     notShiftedIndex ==
                         widget.controller._isAnimatingJumpToPageIndex) {
                   widget.controller._isAnimatingJumpToPage = false;
-                  return currentPage;
+                  return currentPage!;
                 }
 
                 currentPage = widget.itemBuilder(context, notShiftedIndex);
 
-                return currentPage;
+                return currentPage!;
               },
               key: widget.key,
               scrollDirection: widget.scrollDirection,
               reverse: widget.reverse,
-              physics: widget.physics,
+              physics: widget.physics!,
               pageSnapping: widget.pageSnapping,
               dragStartBehavior: widget.dragStartBehavior,
               allowImplicitScrolling: widget.allowImplicitScrolling,

@@ -4,6 +4,7 @@ import 'package:loop_page_view/loop_page_view.dart';
 void main() {
   runApp(MyApp());
 }
+
 final Set<MaterialColor> colors = {
   Colors.blueGrey,
   Colors.blue,
@@ -42,8 +43,7 @@ class _MyAppState extends State<MyApp> {
             children: [
               SizedBox(
                 height: 80,
-                child: 
-                LoopPageView.builder(
+                child: LoopPageView.builder(
                   controller: controller,
                   itemCount: colors.length,
                   itemBuilder: (_, index) {
