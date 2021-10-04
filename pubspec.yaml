@@ -1,6 +1,6 @@
 name: loop_page_view
 description: A simple Flutter PageView builder constructor wrapper that allows for endless scrolling on both directions.
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/wjuniorgit/loop_page_view
 repository: https://github.com/wjuniorgit/loop_page_view
 

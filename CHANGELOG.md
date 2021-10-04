@@ -1,3 +1,7 @@
+## [1.1.1] - October 4, 2021.
+
+* Update to null safety
+
 ## [1.1.0] - October 4, 2021.
 
 * Updates min sdk to >=2.12.0.
