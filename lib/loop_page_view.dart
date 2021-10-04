@@ -83,12 +83,7 @@ class LoopPageView extends StatefulWidget {
     this.onPageChanged,
     this.scrollDirection = Axis.horizontal,
     this.reverse = false,
-    LoopPageController? controller,
-    this.physics,
     this.pageSnapping = true,
-    this.onPageChanged,
-    required this.itemBuilder,
-    required this.itemCount,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
   }) : controller = controller ?? LoopPageController();
