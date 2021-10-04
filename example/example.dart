@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
                   isSelected: isSelected,
                 ),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Animate to $selectedIndex'),
                 onPressed: () {
                   controller.animateToPage(selectedIndex,
@@ -84,13 +84,13 @@ class _MyAppState extends State<MyApp> {
                       curve: Curves.easeIn);
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Jump to $selectedIndex'),
                 onPressed: () {
                   controller.jumpToPage(selectedIndex);
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Animate jump to $selectedIndex'),
                 onPressed: () {
                   controller.animateJumpToPage(selectedIndex,
