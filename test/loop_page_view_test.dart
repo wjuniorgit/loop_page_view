@@ -14,7 +14,7 @@ void main() {
           controller: controller,
           itemCount: 5,
           itemBuilder: (_, index) {
-            return Container(
+            return SizedBox(
               child: Text('$index'),
             );
           },
@@ -44,7 +44,7 @@ void main() {
           controller: controller,
           itemCount: 500,
           itemBuilder: (_, index) {
-            return Container(
+            return SizedBox(
               child: Text('$index'),
             );
           },
