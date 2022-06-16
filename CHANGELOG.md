@@ -1,3 +1,7 @@
+## [1.2.0] - June 16, 2022.
+
+* Migrate to Flutter 3 
+* Swap container to sizedbox
 ## [1.1.1] - October 4, 2021.
 
 * Update to null safety
