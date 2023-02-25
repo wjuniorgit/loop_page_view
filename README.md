@@ -1,6 +1,6 @@
 # loop_page_view
 
-A simple PageView builder constructor wrapper that allows for “indefinitely” scrolling on both directions. 
+A simple PageView builder constructor wrapper that allows for “indefinitely” scrolling on both directions.
 
 ## Usage
 
@@ -18,7 +18,7 @@ An animateJumpToPage method was added to LoopPageController in order to animate 
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.2.0
+  loop_page_view: ^1.2.1
 ```
 
 ## Example
@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
+
 ## Demo
 
 ![](https://media1.giphy.com/media/f8hh4SYeyc7fDcMN77/giphy.gif)
