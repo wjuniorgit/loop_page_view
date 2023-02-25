@@ -101,7 +101,7 @@ class _LoopPageViewState extends State<LoopPageView> {
         ? NotificationListener<ScrollNotification>(
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollEndNotification) {
-                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                WidgetsBinding.instance?.addPostFrameCallback((_) async {
                   widget.controller._modJump();
                 });
                 widget.controller._updateCurrentShiftedPage();
