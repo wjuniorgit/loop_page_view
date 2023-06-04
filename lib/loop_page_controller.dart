@@ -1,7 +1,7 @@
 part of 'loop_page_view.dart';
 
 /// A [PageController] extension to handle [LoopPageView] indefinitely scrollable list.
-class LoopPageController {
+class LoopPageController implements Listenable {
   static const int _initialShiftedPage = 1000000;
 
   // ignore: prefer_final_fields
