@@ -1,4 +1,9 @@
-## [1.2.1] - February 25, 2022
+## [1.2.2] - June 3, 2023
+
+* Implements Listenable interface on LoopPageController
+* Revert commit 48ae3f7
+
+## [1.2.1] - February 25, 2023
 
 * Fix WidgetsBinding null safety
 
