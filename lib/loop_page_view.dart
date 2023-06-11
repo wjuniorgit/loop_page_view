@@ -21,7 +21,7 @@ class LoopPageView extends StatefulWidget {
 
   /// An object that can be used to control the position to which this page
   /// view is scrolled.
-  final LoopPageController controller;
+  final LoopPageController? controller;
 
   /// Configuration of offset passed to [DragStartDetails].
   ///
@@ -78,7 +78,7 @@ class LoopPageView extends StatefulWidget {
   LoopPageView.builder({
     required this.itemBuilder,
     required this.itemCount,
-    LoopPageController? controller,
+    this.controller,
     this.physics,
     this.onPageChanged,
     this.scrollDirection = Axis.horizontal,
@@ -86,7 +86,7 @@ class LoopPageView extends StatefulWidget {
     this.pageSnapping = true,
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
-  }) : controller = controller ?? LoopPageController();
+  });
 
   @override
   _LoopPageViewState createState() => _LoopPageViewState();
@@ -94,6 +94,7 @@ class LoopPageView extends StatefulWidget {
 
 class _LoopPageViewState extends State<LoopPageView> {
   Widget? currentPage;
+  late LoopPageController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -102,29 +103,27 @@ class _LoopPageViewState extends State<LoopPageView> {
             onNotification: (scrollNotification) {
               if (scrollNotification is ScrollEndNotification) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
-                  widget.controller._modJump();
+                  _controller._modJump();
                 });
-                widget.controller._updateCurrentShiftedPage();
+                _controller._updateCurrentShiftedPage();
               }
               return false;
             },
             child: PageView.builder(
-              controller: widget.controller._pageController,
+              controller: _controller._pageController,
               onPageChanged: (int index) {
-                if (widget.controller._isAnimatingJumpToPage != true &&
+                if (_controller._isAnimatingJumpToPage != true &&
                     widget.onPageChanged != null)
-                  widget.onPageChanged!(
-                      widget.controller._notShiftedIndex(index));
+                  widget.onPageChanged!(_controller._notShiftedIndex(index));
               },
               itemBuilder: (context, index) {
-                final int notShiftedIndex =
-                    widget.controller._notShiftedIndex(index);
+                final int notShiftedIndex = _controller._notShiftedIndex(index);
 
-                if (widget.controller._isAnimatingJumpToPage == true &&
+                if (_controller._isAnimatingJumpToPage == true &&
                     currentPage != null &&
                     notShiftedIndex ==
-                        widget.controller._isAnimatingJumpToPageIndex) {
-                  widget.controller._isAnimatingJumpToPage = false;
+                        _controller._isAnimatingJumpToPageIndex) {
+                  _controller._isAnimatingJumpToPage = false;
                   return currentPage ?? SizedBox.shrink();
                 }
 
@@ -147,13 +146,14 @@ class _LoopPageViewState extends State<LoopPageView> {
   @override
   void didUpdateWidget(LoopPageView oldWidget) {
     if (oldWidget.itemCount != widget.itemCount)
-      widget.controller._updateItemCount(widget.itemCount);
+      _controller._updateItemCount(widget.itemCount);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
-    widget.controller._updateItemCount(widget.itemCount);
+    _controller = widget.controller ?? LoopPageController();
+    _controller._updateItemCount(widget.itemCount);
     super.initState();
   }
 }
