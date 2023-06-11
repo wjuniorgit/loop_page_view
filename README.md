@@ -18,7 +18,7 @@ An animateJumpToPage method was added to LoopPageController in order to animate 
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.2.2
+  loop_page_view: ^1.2.3
 ```
 
 ## Example

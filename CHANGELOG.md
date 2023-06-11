@@ -1,3 +1,7 @@
+## [1.2.3] - June 11, 2023
+
+* Fix RangeError(index): Index out of range issue when hot reloading a 'LoopPageView' without a strong reference to a 'LoopPageController'
+
 ## [1.2.2] - June 3, 2023
 
 * Implements Listenable interface on LoopPageController
