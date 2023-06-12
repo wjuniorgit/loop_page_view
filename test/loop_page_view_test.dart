@@ -5,6 +5,49 @@ import 'package:loop_page_view/loop_page_view.dart';
 Widget makeTestable(Widget widget) => MaterialApp(home: widget);
 
 void main() {
+  testWidgets('ItemCount 1', (WidgetTester tester) async {
+    final LoopPageController controller = LoopPageController(initialPage: 0);
+
+    await tester.pumpWidget(
+      makeTestable(
+        LoopPageView.builder(
+          controller: controller,
+          itemCount: 1,
+          itemBuilder: (_, index) {
+            return SizedBox(
+              child: Text('$index'),
+            );
+          },
+        ),
+      ),
+    );
+
+    expect(find.text('0'), findsOneWidget);
+    controller.jumpToPage(1);
+    await tester.pumpAndSettle();
+    expect(find.text('0'), findsOneWidget);
+  });
+
+  testWidgets('ItemCount 5 initialPage 5', (WidgetTester tester) async {
+    final LoopPageController controller = LoopPageController(initialPage: 5);
+
+    await tester.pumpWidget(
+      makeTestable(
+        LoopPageView.builder(
+          controller: controller,
+          itemCount: 5,
+          itemBuilder: (_, index) {
+            return SizedBox(
+              child: Text('$index'),
+            );
+          },
+        ),
+      ),
+    );
+
+    expect(find.text('0'), findsOneWidget);
+  });
+
   testWidgets('ItemCount 5 initialPage 1', (WidgetTester tester) async {
     final LoopPageController controller = LoopPageController(initialPage: 1);
 

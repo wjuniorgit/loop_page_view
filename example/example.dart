@@ -24,7 +24,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final List<bool> isSelected =
       colors.map((e) => e == colors.last ? true : false).toList();
-  final LoopPageController controller = LoopPageController();
+  LoopScrollMode selectedScrollMode = LoopScrollMode.shortest;
+  final LoopPageController controller =
+      LoopPageController(scrollMode: LoopScrollMode.shortest);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,8 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                  "Animate mode is set to ${selectedScrollMode.toString().split('.').last}"),
               SizedBox(
                 height: 80,
                 child: LoopPageView.builder(
@@ -96,6 +100,34 @@ class _MyAppState extends State<MyApp> {
                   controller.animateJumpToPage(selectedIndex,
                       duration: Duration(milliseconds: 400),
                       curve: Curves.easeIn);
+                },
+              ),
+              ElevatedButton(
+                child: Text("Change mode to ${(() {
+                  switch (selectedScrollMode) {
+                    case LoopScrollMode.shortest:
+                      return 'forwards';
+                    case LoopScrollMode.forwards:
+                      return 'backwards';
+                    case LoopScrollMode.backwards:
+                      return 'shortest';
+                  }
+                })()}"),
+                onPressed: () {
+                  setState(() {
+                    switch (selectedScrollMode) {
+                      case LoopScrollMode.shortest:
+                        selectedScrollMode = LoopScrollMode.forwards;
+                        break;
+                      case LoopScrollMode.forwards:
+                        selectedScrollMode = LoopScrollMode.backwards;
+                        break;
+                      case LoopScrollMode.backwards:
+                        selectedScrollMode = LoopScrollMode.shortest;
+                        break;
+                    }
+                    controller.scrollMode = selectedScrollMode;
+                  });
                 },
               ),
             ],
