@@ -21,15 +21,19 @@ class LoopPageController implements Listenable {
 
   int _isAnimatingJumpToPageIndex = 0;
 
-  LoopPageController({
-    int initialPage = 0,
-    bool keepPage = true,
-    double viewportFraction = 1.0,
-  })  : assert(viewportFraction > 0.0),
+  LoopScrollDirection scrollDirection;
+
+  LoopPageController(
+      {int initialPage = 0,
+      bool keepPage = true,
+      double viewportFraction = 1.0,
+      LoopScrollDirection scrollDirection = LoopScrollDirection.shortest})
+      : assert(viewportFraction > 0.0),
         _currentShiftedPage = _initialShiftedPage,
         _itemCount = 0,
         _initialIndexShift = 0,
         initialPage = initialPage,
+        scrollDirection = scrollDirection,
         _pageController = PageController(
           initialPage: initialPage + _initialShiftedPage,
           keepPage: keepPage,
@@ -228,11 +232,20 @@ class LoopPageController implements Listenable {
             ? 0
             : distance + _itemCount;
 
-    final int shiftedPage = distance.abs() <= oppositeDistance.abs()
-        ? instantCurrentShiftedPage + distance
-        : instantCurrentShiftedPage + oppositeDistance;
-
-    return shiftedPage;
+    switch (scrollDirection) {
+      case LoopScrollDirection.shortest:
+        return distance.abs() <= oppositeDistance.abs()
+            ? instantCurrentShiftedPage + distance
+            : instantCurrentShiftedPage + oppositeDistance;
+      case LoopScrollDirection.forwards:
+        return distance > oppositeDistance
+            ? instantCurrentShiftedPage + distance
+            : instantCurrentShiftedPage + oppositeDistance;
+      case LoopScrollDirection.backwards:
+        return distance < oppositeDistance
+            ? instantCurrentShiftedPage + distance
+            : instantCurrentShiftedPage + oppositeDistance;
+    }
   }
 
   /// Updates _currentShiftedPage to be equal current [PageController] page.
@@ -246,4 +259,16 @@ class LoopPageController implements Listenable {
         _itemCount > 0 ? _initialShiftedPage % _itemCount : _initialShiftedPage;
     _currentShiftedPage = _initialShiftedPage + initialPage;
   }
+}
+
+/// Enum representing different scroll directions for a LoopPageController.
+///
+/// Values:
+/// * `shortest`: The LoopPageController will animate to the closest page. For example, if the current page is 1 and the target page is 5, but the total number of pages is 6, the LoopPageController will go backwards (from 1 to 6 to 5) instead of forwards (from 1 to 2 to 3 to 4 to 5). This is because the shortest path from 1 to 5 in this case is to go backwards.
+/// * `forwards`: The LoopPageController will always animate forwards to reach the target page. Even if the target page is technically closer when moving backwards, this option will make the controller move forwards until it reaches the target page.
+/// * `backwards`: The LoopPageController will always animate backwards to reach the target page. Similar to `forwards`, but in the opposite direction. Even if the target page is technically closer when moving forwards, this option will make the controller move backwards until it reaches the target page.
+enum LoopScrollDirection {
+  shortest,
+  forwards,
+  backwards,
 }
