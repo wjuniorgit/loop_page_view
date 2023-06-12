@@ -15,7 +15,7 @@ class LoopPageController implements Listenable {
 
   late PageController _pageController;
 
-  late int _initialPage;
+  final int initialPage;
 
   bool _isAnimatingJumpToPage = false;
 
@@ -29,7 +29,7 @@ class LoopPageController implements Listenable {
         _currentShiftedPage = _initialShiftedPage,
         _itemCount = 0,
         _initialIndexShift = 0,
-        _initialPage = initialPage,
+        initialPage = initialPage,
         _pageController = PageController(
           initialPage: initialPage + _initialShiftedPage,
           keepPage: keepPage,
@@ -244,6 +244,6 @@ class LoopPageController implements Listenable {
     _itemCount = itemCount;
     _initialIndexShift =
         _itemCount > 0 ? _initialShiftedPage % _itemCount : _initialShiftedPage;
-    _currentShiftedPage = _initialShiftedPage + _initialPage;
+    _currentShiftedPage = _initialShiftedPage + initialPage;
   }
 }
