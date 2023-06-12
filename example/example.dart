@@ -24,7 +24,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final List<bool> isSelected =
       colors.map((e) => e == colors.last ? true : false).toList();
-  final LoopPageController controller = LoopPageController();
+  LoopScrollDirection selectedScrollDirection = LoopScrollDirection.shortest;
+  final LoopPageController controller =
+      LoopPageController(scrollDirection: LoopScrollDirection.shortest);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,8 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                  "Animate direction is set to ${selectedScrollDirection.toString().split('.').last}"),
               SizedBox(
                 height: 80,
                 child: LoopPageView.builder(
@@ -96,6 +100,34 @@ class _MyAppState extends State<MyApp> {
                   controller.animateJumpToPage(selectedIndex,
                       duration: Duration(milliseconds: 400),
                       curve: Curves.easeIn);
+                },
+              ),
+              ElevatedButton(
+                child: Text("Change direction to ${(() {
+                  switch (selectedScrollDirection) {
+                    case LoopScrollDirection.shortest:
+                      return 'forwards';
+                    case LoopScrollDirection.forwards:
+                      return 'backwards';
+                    case LoopScrollDirection.backwards:
+                      return 'shortest';
+                  }
+                })()}"),
+                onPressed: () {
+                  setState(() {
+                    switch (selectedScrollDirection) {
+                      case LoopScrollDirection.shortest:
+                        selectedScrollDirection = LoopScrollDirection.forwards;
+                        break;
+                      case LoopScrollDirection.forwards:
+                        selectedScrollDirection = LoopScrollDirection.backwards;
+                        break;
+                      case LoopScrollDirection.backwards:
+                        selectedScrollDirection = LoopScrollDirection.shortest;
+                        break;
+                    }
+                    controller.scrollDirection = selectedScrollDirection;
+                  });
                 },
               ),
             ],
