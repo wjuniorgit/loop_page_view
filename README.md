@@ -14,7 +14,7 @@ import 'package:loop_page_view/loop_page_view.dart';
 
 A new method, 'animateJumpToPage', has been added to 'LoopPageController'. This allows it to animate a jump to any page without having to build the intervening pages, provided that 'viewportFraction' is set to 1.0.
 
-The direction to which the 'LoopPageViewController' animates can be set by updating 'LoopPageViewController.scrollDirection'. 'LoopScrollDirection.shortest' animates in the direction that requires the least amount of steps. On the other hand, 'LoopScrollDirection.forwards' always animates forwards, and 'LoopScrollDirection.backwards' always animates backwards.
+The direction to which the 'LoopPageViewController' animates can be set by updating 'LoopPageViewController.scrollBehavior'. 'LoopScrollBehavior.shortest' animates in the direction that requires the least amount of steps. On the other hand, 'LoopScrollBehavior.forwards' always animates forwards, and 'LoopScrollBehavior.backwards' always animates backwards.
 
 ## Installation
 
