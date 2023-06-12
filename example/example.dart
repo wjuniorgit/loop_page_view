@@ -24,9 +24,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final List<bool> isSelected =
       colors.map((e) => e == colors.last ? true : false).toList();
-  LoopScrollBehavior selectedScrollBehavior = LoopScrollBehavior.shortest;
+  LoopScrollMode selectedScrollMode = LoopScrollMode.shortest;
   final LoopPageController controller =
-      LoopPageController(scrollBehavior: LoopScrollBehavior.shortest);
+      LoopPageController(scrollMode: LoopScrollMode.shortest);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                  "Animate behavior is set to ${selectedScrollBehavior.toString().split('.').last}"),
+                  "Animate mode is set to ${selectedScrollMode.toString().split('.').last}"),
               SizedBox(
                 height: 80,
                 child: LoopPageView.builder(
@@ -103,30 +103,30 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
               ElevatedButton(
-                child: Text("Change behavior to ${(() {
-                  switch (selectedScrollBehavior) {
-                    case LoopScrollBehavior.shortest:
+                child: Text("Change mode to ${(() {
+                  switch (selectedScrollMode) {
+                    case LoopScrollMode.shortest:
                       return 'forwards';
-                    case LoopScrollBehavior.forwards:
+                    case LoopScrollMode.forwards:
                       return 'backwards';
-                    case LoopScrollBehavior.backwards:
+                    case LoopScrollMode.backwards:
                       return 'shortest';
                   }
                 })()}"),
                 onPressed: () {
                   setState(() {
-                    switch (selectedScrollBehavior) {
-                      case LoopScrollBehavior.shortest:
-                        selectedScrollBehavior = LoopScrollBehavior.forwards;
+                    switch (selectedScrollMode) {
+                      case LoopScrollMode.shortest:
+                        selectedScrollMode = LoopScrollMode.forwards;
                         break;
-                      case LoopScrollBehavior.forwards:
-                        selectedScrollBehavior = LoopScrollBehavior.backwards;
+                      case LoopScrollMode.forwards:
+                        selectedScrollMode = LoopScrollMode.backwards;
                         break;
-                      case LoopScrollBehavior.backwards:
-                        selectedScrollBehavior = LoopScrollBehavior.shortest;
+                      case LoopScrollMode.backwards:
+                        selectedScrollMode = LoopScrollMode.shortest;
                         break;
                     }
-                    controller.scrollBehavior = selectedScrollBehavior;
+                    controller.scrollMode = selectedScrollMode;
                   });
                 },
               ),
