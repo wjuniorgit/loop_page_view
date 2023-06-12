@@ -10,9 +10,11 @@ Import the package into your code:
 import 'package:loop_page_view/loop_page_view.dart';
 ```
 
-It works exactly as a PageView builder constructor would, but it always requires an item count, and it requires a LoopPageController as its controller. LoopPageController also works just as a PageController would, but it correctly handles LoopPageView endless scrollable list.
+'LoopPageView' operates exactly like a 'PageView' 'builder' constructor, but it always requires an item count, as well as a 'LoopPageController' as its controller. The 'LoopPageController' functions similarly to a 'PageController', but it correctly handles the endless scrolling of 'LoopPageView'.
 
-An animateJumpToPage method was added to LoopPageController in order to animate a jump to any page without building the pages in between if viewportFraction is 1.0.
+A new method, 'animateJumpToPage', has been added to 'LoopPageController'. This allows it to animate a jump to any page without having to build the intervening pages, provided that 'viewportFraction' is set to 1.0.
+
+The direction to which the 'LoopPageViewController' animates can be set by updating 'LoopPageViewController.scrollDirection'. 'LoopScrollDirection.shortest' animates in the direction that requires the least amount of steps. On the other hand, 'LoopScrollDirection.forwards' always animates forwards, and 'LoopScrollDirection.backwards' always animates backwards.
 
 ## Installation
 
