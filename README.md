@@ -20,7 +20,7 @@ The direction to which the `LoopPageViewController` animates can be set by updat
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.2.3
+  loop_page_view: ^1.2.4
 ```
 
 ## Example
@@ -52,6 +52,53 @@ class MyApp extends StatelessWidget {
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+`LoopPageView` widget is designed to be used similarly to Flutter's built-in `PageView`.
+
+To extend its functionality and allow mouse drag gestures in a web context, you can use it together with a `ScrollConfiguration` widget.
+
+Here's how you could do it:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:loop_page_view/loop_page_view.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ScrollConfiguration Demo',
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
+        ),
+        child: LoopPageView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Center(
+              child: Text('Page $index'),
+            );
+          },
         ),
       ),
     );

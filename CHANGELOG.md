@@ -1,3 +1,8 @@
+## [1.2.4] - June 12, 2023
+
+* Expose the value of `initialPage` in `LoopPageController`
+* Adds a new `enum` called `LoopScrollMode` to give users control over the scrolling direction in `LoopPageController`. Shortest option enables the controller to choose the shortest path to the target page. Forwards and Backwards options enforce a specific scrolling direction, regardless of which is the shortest path to the target page.
+
 ## [1.2.3] - June 11, 2023
 
 * Fix RangeError(index): Index out of range issue when hot reloading a 'LoopPageView' without a strong reference to a 'LoopPageController'
