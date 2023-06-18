@@ -1,8 +1,8 @@
 part of 'loop_page_view.dart';
 
-/// A [PageController] extension to handle [LoopPageView] indefinitely scrollable list.
+/// A [PageController] extension to handle an infinitely scrollable list in [LoopPageView].
 class LoopPageController implements Listenable {
-  static const int _initialShiftedPage = 1000000;
+  final int _initialShiftedPage;
 
   // ignore: prefer_final_fields
   int _currentShiftedPage;
@@ -23,19 +23,35 @@ class LoopPageController implements Listenable {
 
   LoopScrollMode scrollMode;
 
+  final LoopActivationMode _activationMode;
+
+  bool _hasJumpedForwardsOnce = false;
+
+  /// Creates a LoopPageController with an immediate looping activation mode.
+  /// It enables infinite looping behavior right from the first page.
+  /// It allows setting a scroll mode, defaulting to the shortest path between pages.
+  /// You can set the `LoopActivationMode` to start looping immediately, only after the first loop,
+  /// or to only enable infinite loops going forward. Based on this mode, the controller will adjust the
+  /// scroll mode and initial page.
   LoopPageController(
       {int initialPage = 0,
       bool keepPage = true,
       double viewportFraction = 1.0,
-      LoopScrollMode scrollMode = LoopScrollMode.shortest})
+      LoopScrollMode scrollMode = LoopScrollMode.shortest,
+      LoopActivationMode activationMode = LoopActivationMode.immediate})
       : assert(viewportFraction > 0.0),
-        _currentShiftedPage = _initialShiftedPage,
+        _initialShiftedPage =
+            activationMode == LoopActivationMode.immediate ? 1000000 : 0,
+        _currentShiftedPage =
+            activationMode == LoopActivationMode.immediate ? 1000000 : 0,
         _itemCount = 0,
         _initialIndexShift = 0,
         initialPage = initialPage,
         scrollMode = scrollMode,
+        _activationMode = activationMode,
         _pageController = PageController(
-          initialPage: initialPage + _initialShiftedPage,
+          initialPage: initialPage +
+              (activationMode == LoopActivationMode.immediate ? 1000000 : 0),
           keepPage: keepPage,
           viewportFraction: viewportFraction,
         );
@@ -194,9 +210,25 @@ class LoopPageController implements Listenable {
 
   /// Changes index for which page is displayed in the controlled [LoopPageView]
   /// in order to enable infinite scrolling
+
   void _modJump() {
-    final int shiftedPage =
+    int shiftedPage =
         _initialShiftedPage + _notShiftedIndex(_currentShiftedPage);
+
+    /// This code handles 'LoopActivationMode.afterFirstLoop'.
+    /// '_hasJumpedForwardsOnce' becomes true when a forward loop completes once.
+    /// Then, 'shiftedPage' is updated to enable continuous looping.
+    if (_activationMode == LoopActivationMode.afterFirstLoop) {
+      if (_currentShiftedPage > shiftedPage) {
+        _hasJumpedForwardsOnce = true;
+      } else {
+        _hasJumpedForwardsOnce = false;
+      }
+      if (_hasJumpedForwardsOnce) {
+        shiftedPage = _itemCount + _notShiftedIndex(_currentShiftedPage);
+      }
+    }
+
     if (_currentShiftedPage != shiftedPage) {
       _currentShiftedPage = shiftedPage;
       _pageController.jumpToPage(shiftedPage);
@@ -231,6 +263,12 @@ class LoopPageController implements Listenable {
         : distance == 0
             ? 0
             : distance + _itemCount;
+
+    if (instantCurrentShiftedPage + distance < 0) {
+      return instantCurrentShiftedPage + oppositeDistance;
+    } else if (instantCurrentShiftedPage + oppositeDistance < 0) {
+      return instantCurrentShiftedPage + distance;
+    }
 
     switch (scrollMode) {
       case LoopScrollMode.shortest:
@@ -271,4 +309,26 @@ enum LoopScrollMode {
   shortest,
   forwards,
   backwards,
+}
+
+/// Enum that represents the different modes of activating the infinite loop
+/// in the `LoopPageView`.
+///
+/// The modes are:
+/// * `immediate`: Infinite loop is enabled from the start. As soon as the
+///   `LoopPageView` is loaded, the user can scroll infinitely in both
+///   directions.
+///
+/// * `afterFirstLoop`: The infinite loop is only enabled after the first loop
+///   through all pages. Initially, the user can scroll through the pages in
+///   normal sequence. Once the user reaches the end and loops back to the
+///   first page, infinite scrolling is enabled.
+///
+/// * `forwardOnly`: Infinite scrolling is only enabled in the forward
+///   direction. The user can scroll forward through the pages indefinitely,
+///   but cannot scroll backwards past the first page.
+enum LoopActivationMode {
+  immediate,
+  afterFirstLoop,
+  forwardOnly,
 }
