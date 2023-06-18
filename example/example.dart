@@ -25,8 +25,9 @@ class _MyAppState extends State<MyApp> {
   final List<bool> isSelected =
       colors.map((e) => e == colors.last ? true : false).toList();
   LoopScrollMode selectedScrollMode = LoopScrollMode.shortest;
-  final LoopPageController controller =
-      LoopPageController(scrollMode: LoopScrollMode.shortest);
+  final LoopPageController controller = LoopPageController(
+      scrollMode: LoopScrollMode.shortest,
+      activationMode: LoopActivationMode.immediate);
 
   @override
   Widget build(BuildContext context) {

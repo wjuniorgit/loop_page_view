@@ -1,3 +1,10 @@
+## [1.2.5] - June 18, 2023
+
+* Introduced `LoopActivationMode` with the following modes:
+  * `LoopActivationMode.immediate`: This mode triggers infinite looping right from the first page, immediately after the `LoopPageView` is launched.
+  * `LoopActivationMode.afterFirstLoop`: In this mode, infinite looping is only triggered after the first complete forward loop is performed.
+  * `LoopActivationMode.forwardOnly`: This mode enables only forward infinite scrolling, preventing backward looping.
+
 ## [1.2.4] - June 12, 2023
 
 * Expose the value of `initialPage` in `LoopPageController`

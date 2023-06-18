@@ -1,6 +1,6 @@
 # loop_page_view
 
-A simple PageView builder constructor wrapper that allows for “indefinitely” scrolling on both directions.
+`LoopPageView` is an enhanced `PageView` `builder` for Flutter, enabling infinite scrolling in both directions. It utilizes a custom`LoopPageController` that supports direct animated jumps between pages and configurable scrolling and looping behavior. You can set the scrolling direction and control the start of infinite looping for precise customization
 
 ## Usage
 
@@ -16,11 +16,17 @@ A new method, `animateJumpToPage`, has been added to `LoopPageController`. This 
 
 The direction to which the `LoopPageViewController` animates can be set by updating `LoopPageViewController.scrollMode`. `LoopScrollMode.shortest` animates in the direction that requires the least amount of steps. On the other hand, `LoopScrollMode.forwards` always animates forwards, and `LoopScrollMode.backwards` always animates backwards.
 
+You can set when the infinite looping starts setting `LoopPageViewContoller`' `LoopActivationMode` with the following modes:
+
+* `LoopActivationMode.immediate`: This mode triggers infinite looping right from the first page, immediately after the `LoopPageView` is launched.
+* `LoopActivationMode.afterFirstLoop`: In this mode, infinite looping is only triggered after the first complete forward loop is performed.
+* `LoopActivationMode.forwardOnly`: This mode enables only forward infinite scrolling, preventing backward looping.
+
 ## Installation
 
 ```yaml
 dependencies:
-  loop_page_view: ^1.2.4
+  loop_page_view: ^1.2.5
 ```
 
 ## Example
